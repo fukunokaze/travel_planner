@@ -1,0 +1,380 @@
+:root {
+  --jp-bg: #eef2f8;
+  --jp-card-bg: #ffffff;
+  --jp-panel-border: #dde2ef;
+  --jp-sidebar-start: #081936;
+  --jp-sidebar-end: #102a61;
+  --jp-primary: #2f6fe4;
+  --jp-primary-soft: #e6edff;
+  --jp-text: #0d1b35;
+  --jp-muted: #5c6b87;
+  --jp-shadow: 0 18px 42px rgba(26, 34, 67, 0.12);
+  --jp-radius-lg: 18px;
+  --jp-radius-md: 14px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+.journey-body {
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+  color: var(--jp-text);
+  background:
+    radial-gradient(circle at 12% 16%, rgba(102, 138, 238, 0.17), transparent 28%),
+    radial-gradient(circle at 95% 8%, rgba(95, 140, 224, 0.14), transparent 24%),
+    var(--jp-bg);
+}
+
+a {
+  text-decoration: none;
+}
+
+.journey-shell {
+  min-height: 100vh;
+  display: flex;
+}
+
+.jp-sidebar {
+  width: 330px;
+  flex-shrink: 0;
+  color: #e8eeff;
+  background:
+    radial-gradient(circle at 20% 22%, rgba(52, 113, 255, 0.3), transparent 35%),
+    radial-gradient(circle at 80% 92%, rgba(58, 139, 255, 0.18), transparent 28%),
+    linear-gradient(160deg, var(--jp-sidebar-start), var(--jp-sidebar-end));
+  padding: 28px 18px;
+  box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.08);
+}
+
+.jp-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 32px;
+}
+
+.jp-brand-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(48, 107, 228, 0.9);
+  font-size: 1.15rem;
+}
+
+.jp-sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #c8d6ff;
+  border-radius: 12px;
+  padding: 10px 14px;
+  margin-bottom: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.jp-sidebar-link:hover {
+  background: rgba(255, 255, 255, 0.11);
+  color: #ffffff;
+}
+
+.jp-sidebar-link.active {
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+}
+
+.jp-sidebar-section {
+  margin-top: 24px;
+  margin-bottom: 8px;
+  font-size: 0.94rem;
+  color: rgba(235, 241, 255, 0.75);
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+}
+
+.jp-main {
+  flex: 1;
+  padding: 28px 28px 34px;
+}
+
+.jp-header {
+  background: rgba(255, 255, 255, 0.82);
+  border-radius: var(--jp-radius-lg);
+  box-shadow: var(--jp-shadow);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  padding: 20px 24px;
+  margin-bottom: 20px;
+}
+
+.jp-page-title {
+  font-weight: 700;
+  margin-bottom: 4px;
+  letter-spacing: -0.01em;
+}
+
+.jp-subtitle {
+  color: var(--jp-muted);
+  margin-bottom: 0;
+}
+
+.jp-toolbar .btn {
+  border-radius: 12px;
+  min-width: 128px;
+}
+
+.jp-panel {
+  background: rgba(255, 255, 255, 0.88);
+  border-radius: var(--jp-radius-lg);
+  border: 1px solid var(--jp-panel-border);
+  box-shadow: var(--jp-shadow);
+  padding: 22px;
+}
+
+.jp-panel-title {
+  margin-bottom: 18px;
+  font-weight: 700;
+}
+
+.jp-day-group + .jp-day-group {
+  margin-top: 24px;
+}
+
+.jp-day-row {
+  display: grid;
+  grid-template-columns: 124px 1fr;
+  column-gap: 18px;
+}
+
+.jp-day-label h3 {
+  font-weight: 700;
+  margin: 0;
+}
+
+.jp-day-label p {
+  margin: 2px 0 0;
+  color: var(--jp-muted);
+}
+
+.jp-event-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.jp-event-card {
+  border: 1px solid var(--jp-panel-border);
+  border-radius: var(--jp-radius-md);
+  background: var(--jp-card-bg);
+  display: grid;
+  grid-template-columns: 84px 34px 1fr auto;
+  gap: 14px;
+  align-items: start;
+  padding: 14px;
+  position: relative;
+}
+
+.jp-event-time {
+  font-weight: 700;
+}
+
+.jp-event-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.jp-event-icon.activity {
+  background: #ca4c46;
+}
+
+.jp-event-icon.flight {
+  background: #2f6fe4;
+}
+
+.jp-event-icon.lodging {
+  background: #587eb8;
+}
+
+.jp-event-title {
+  margin: 0;
+  font-weight: 700;
+}
+
+.jp-event-subline {
+  margin: 2px 0 0;
+  color: var(--jp-muted);
+}
+
+.jp-tag-wrap {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.jp-thumb {
+  width: 130px;
+  height: 76px;
+  border-radius: 11px;
+  object-fit: cover;
+}
+
+.jp-side-section + .jp-side-section {
+  margin-top: 18px;
+}
+
+.jp-side-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.jp-side-title h3 {
+  margin: 0;
+  font-size: 1.7rem;
+  font-weight: 700;
+}
+
+.jp-mini-card {
+  border-radius: var(--jp-radius-md);
+  border: 1px solid var(--jp-panel-border);
+  background: white;
+  padding: 14px;
+  height: 100%;
+}
+
+.jp-mini-card h4 {
+  font-size: 1.13rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.jp-mini-card p {
+  margin-bottom: 4px;
+  color: #1f2d4a;
+}
+
+.jp-meta {
+  color: var(--jp-muted);
+}
+
+.jp-action-inline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.jp-modal-header {
+  color: #ffffff;
+  background:
+    radial-gradient(circle at 88% 12%, rgba(80, 126, 238, 0.3), transparent 38%),
+    linear-gradient(105deg, #0e1f46, #173875);
+}
+
+.jp-modal .modal-content {
+  border: 1px solid var(--jp-panel-border);
+  border-radius: var(--jp-radius-lg);
+  overflow: hidden;
+}
+
+.jp-modal .form-label {
+  font-weight: 700;
+}
+
+.jp-doc-card {
+  border-radius: 12px;
+  border: 1px solid var(--jp-panel-border);
+  padding: 12px 14px;
+  background: white;
+  font-weight: 600;
+}
+
+.jp-trip-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(265px, 1fr));
+}
+
+.jp-trip-card {
+  border-radius: var(--jp-radius-md);
+  border: 1px solid var(--jp-panel-border);
+  padding: 16px;
+  background: white;
+  box-shadow: 0 12px 22px rgba(28, 41, 78, 0.08);
+}
+
+.jp-trip-card h3 {
+  margin: 0 0 6px;
+  font-size: 1.32rem;
+  font-weight: 700;
+}
+
+.jp-notice {
+  color: #8b1d23;
+  background: #fdecef;
+  border: 1px solid #f8c2ca;
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+}
+
+@media (max-width: 1200px) {
+  .jp-sidebar {
+    width: 280px;
+  }
+}
+
+@media (max-width: 992px) {
+  .journey-shell {
+    flex-direction: column;
+  }
+
+  .jp-sidebar {
+    width: 100%;
+  }
+
+  .jp-main {
+    padding: 20px;
+  }
+
+  .jp-day-row {
+    grid-template-columns: 1fr;
+    row-gap: 10px;
+  }
+}
+
+@media (max-width: 640px) {
+  .jp-event-card {
+    grid-template-columns: 80px 30px 1fr;
+  }
+
+  .jp-thumb {
+    grid-column: 1 / -1;
+    width: 100%;
+    height: 160px;
+  }
+
+  .jp-toolbar .btn {
+    min-width: auto;
+  }
+}
+

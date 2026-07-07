@@ -1,0 +1,48 @@
+function parseDate(rawDate: string) {
+  const safe = `${rawDate}T00:00:00`;
+  return new Date(safe);
+}
+
+export function formatDisplayDate(rawDate: string): string {
+  const date = parseDate(rawDate);
+  return new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric"
+  }).format(date);
+}
+
+export function formatTripRange(startDate: string, endDate: string): string {
+  const start = parseDate(startDate);
+  const end = parseDate(endDate);
+
+  return `${new Intl.DateTimeFormat("en-US", {
+    month: "long",
+    day: "numeric"
+  }).format(start)} - ${new Intl.DateTimeFormat("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric"
+  }).format(end)}`;
+}
+
+export function formatDisplayTime(rawTime?: string): string {
+  if (!rawTime) {
+    return "Anytime";
+  }
+
+  const [hours, minutes] = rawTime.split(":").map((value) => Number(value));
+
+  if (Number.isNaN(hours) || Number.isNaN(minutes)) {
+    return rawTime;
+  }
+
+  const normalizedDate = new Date();
+  normalizedDate.setHours(hours, minutes, 0, 0);
+
+  return new Intl.DateTimeFormat("en-US", {
+    hour: "numeric",
+    minute: "2-digit"
+  }).format(normalizedDate);
+}
+

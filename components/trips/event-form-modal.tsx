@@ -67,8 +67,14 @@ export function EventFormModal({ trip, show, onClose }: EventFormModalProps) {
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setSaving(true);
     setError(null);
+
+    if (form.date < trip.startDate || form.date > trip.endDate) {
+      setError(`Event date must be between ${trip.startDate} and ${trip.endDate}.`);
+      return;
+    }
+
+    setSaving(true);
 
     try {
       await createTripEvent(trip.id, {
@@ -144,9 +150,14 @@ export function EventFormModal({ trip, show, onClose }: EventFormModalProps) {
                     type="date"
                     className="form-control"
                     value={form.date}
+                    min={trip.startDate}
+                    max={trip.endDate}
                     onChange={(input) => setForm({ ...form, date: input.target.value })}
                     required
                   />
+                  <div className="form-text">
+                    Must be between {trip.startDate} and {trip.endDate}.
+                  </div>
                 </div>
                 <div className="col-md-2">
                   <label className="form-label" htmlFor="event-start">

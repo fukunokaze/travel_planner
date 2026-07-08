@@ -129,18 +129,16 @@ export const mockTripDetails: Record<string, TripDetail> = {
         id: "l1",
         name: "Hotel Gracery Shinjuku",
         address: "Kabukicho, Tokyo",
-        startDate: "2024-03-15",
-        endDate: "2024-03-19",
-        nights: 4,
+        checkIn: "2024-03-15T15:00",
+        checkOut: "2024-03-19T11:00",
         confirmationCode: "JP4519"
       },
       {
         id: "l2",
         name: "Ryokan Kyoto",
         address: "Gion, Kyoto",
-        startDate: "2024-03-19",
-        endDate: "2024-03-22",
-        nights: 3,
+        checkIn: "2024-03-19T15:00",
+        checkOut: "2024-03-22T11:00",
         confirmationCode: "JP4519"
       }
     ],

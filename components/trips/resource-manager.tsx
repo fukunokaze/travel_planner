@@ -6,7 +6,7 @@ import {
   createFlight,
   createLodging
 } from "@/lib/api-client";
-import { formatDisplayDate } from "@/lib/date-utils";
+import { calculateNights, formatDisplayDate } from "@/lib/date-utils";
 import { TripDetail } from "@/lib/types";
 import { DeleteEntityButton } from "./delete-entity-button";
 
@@ -31,9 +31,8 @@ export function ResourceManager({ trip }: ResourceManagerProps) {
   const [lodgingForm, setLodgingForm] = useState({
     name: "",
     address: "",
-    startDate: trip.startDate,
-    endDate: trip.endDate,
-    nights: "1",
+    checkIn: `${trip.startDate}T15:00`,
+    checkOut: `${trip.endDate}T11:00`,
     confirmationCode: ""
   });
 
@@ -69,18 +68,14 @@ export function ResourceManager({ trip }: ResourceManagerProps) {
     setError(null);
 
     try {
-      await createLodging(trip.id, {
-        ...lodgingForm,
-        nights: Number(lodgingForm.nights)
-      });
+      await createLodging(trip.id, lodgingForm);
       router.refresh();
       setShowLodgingForm(false);
       setLodgingForm({
         name: "",
         address: "",
-        startDate: trip.startDate,
-        endDate: trip.endDate,
-        nights: "1",
+        checkIn: `${trip.startDate}T15:00`,
+        checkOut: `${trip.endDate}T11:00`,
         confirmationCode: ""
       });
     } catch (err) {
@@ -242,10 +237,10 @@ export function ResourceManager({ trip }: ResourceManagerProps) {
               <div className="col-6">
                 <input
                   className="form-control"
-                  type="date"
-                  value={lodgingForm.startDate}
+                  type="datetime-local"
+                  value={lodgingForm.checkIn}
                   onChange={(input) =>
-                    setLodgingForm({ ...lodgingForm, startDate: input.target.value })
+                    setLodgingForm({ ...lodgingForm, checkIn: input.target.value })
                   }
                   required
                 />
@@ -253,25 +248,18 @@ export function ResourceManager({ trip }: ResourceManagerProps) {
               <div className="col-6">
                 <input
                   className="form-control"
-                  type="date"
-                  value={lodgingForm.endDate}
+                  type="datetime-local"
+                  value={lodgingForm.checkOut}
                   onChange={(input) =>
-                    setLodgingForm({ ...lodgingForm, endDate: input.target.value })
+                    setLodgingForm({ ...lodgingForm, checkOut: input.target.value })
                   }
                   required
                 />
               </div>
-              <div className="col-6">
-                <input
-                  className="form-control"
-                  type="number"
-                  min={1}
-                  value={lodgingForm.nights}
-                  onChange={(input) =>
-                    setLodgingForm({ ...lodgingForm, nights: input.target.value })
-                  }
-                  required
-                />
+              <div className="col-6 d-flex align-items-center">
+                <span className="jp-meta">
+                  {calculateNights(lodgingForm.checkIn, lodgingForm.checkOut)} nights
+                </span>
               </div>
               <div className="col-6">
                 <input
@@ -296,11 +284,11 @@ export function ResourceManager({ trip }: ResourceManagerProps) {
               <article className="jp-mini-card">
                 <h4>{lodging.name}</h4>
                 <p>
-                  ({lodging.nights} nights)
+                  ({calculateNights(lodging.checkIn, lodging.checkOut)} nights)
                   <br />
                   address: {lodging.address}
                   <br />
-                  Dates: {formatDisplayDate(lodging.startDate)} - {formatDisplayDate(lodging.endDate)}
+                  Dates: {formatDisplayDate(lodging.checkIn)} - {formatDisplayDate(lodging.checkOut)}
                 </p>
                 <p className="jp-meta">Confirmation #: {lodging.confirmationCode || "-"}</p>
                 <div className="jp-action-inline">

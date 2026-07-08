@@ -3,6 +3,7 @@
 import { FormEvent, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createTripEvent } from "@/lib/api-client";
+import { calculateNights } from "@/lib/date-utils";
 import { TripDetail, TripEventType } from "@/lib/types";
 
 interface EventFormModalProps {
@@ -42,7 +43,7 @@ export function EventFormModal({ trip, show, onClose }: EventFormModalProps) {
       })),
       ...trip.lodgings.map((lodging) => ({
         id: lodging.id,
-        label: `${lodging.name} (${lodging.nights} nights)`
+        label: `${lodging.name} (${calculateNights(lodging.checkIn, lodging.checkOut)} nights)`
       }))
     ],
     [trip.flights, trip.lodgings]

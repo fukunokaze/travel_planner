@@ -76,18 +76,16 @@ export interface LodgingItem {
   id: string;
   name: string;
   address: string;
-  startDate: string;
-  endDate: string;
-  nights: number;
+  checkIn: string;
+  checkOut: string;
   confirmationCode?: string;
 }
 
 export interface LodgingUpsertRequest {
   name: string;
   address: string;
-  startDate: string;
-  endDate: string;
-  nights: number;
+  checkIn: string;
+  checkOut: string;
   confirmationCode?: string;
 }
 

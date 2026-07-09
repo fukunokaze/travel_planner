@@ -58,8 +58,8 @@ export interface FlightItem {
   route: string;
   airline: string;
   flightNumber: string;
-  departureDateTime: string;
-  arrivalDateTime: string;
+  departureTime: string;
+  arrivalTime: string;
   seat?: string;
   confirmationCode?: string;
 }
@@ -68,8 +68,8 @@ export interface FlightUpsertRequest {
   route: string;
   airline: string;
   flightNumber: string;
-  departureDateTime: string;
-  arrivalDateTime: string;
+  departureTime: string;
+  arrivalTime: string;
   seat?: string;
   confirmationCode?: string;
 }
@@ -78,18 +78,16 @@ export interface LodgingItem {
   id: string;
   name: string;
   address: string;
-  startDate: string;
-  endDate: string;
-  nights: number;
+  checkIn: string;
+  checkOut: string;
   confirmationCode?: string;
 }
 
 export interface LodgingUpsertRequest {
   name: string;
   address: string;
-  startDate: string;
-  endDate: string;
-  nights: number;
+  checkIn: string;
+  checkOut: string;
   confirmationCode?: string;
 }
 

@@ -110,8 +110,8 @@ export const mockTripDetails: Record<string, TripDetail> = {
         route: "SFO \u2192 NRT",
         airline: "JL11",
         flightNumber: "JL11",
-        departureDateTime: "2024-03-15T11:05",
-        arrivalDateTime: "2024-03-16T15:20",
+        departureTime: "2024-03-15T11:05",
+        arrivalTime: "2024-03-16T15:20",
         seat: "353-38",
         confirmationCode: "NRT3538"
       },
@@ -120,8 +120,8 @@ export const mockTripDetails: Record<string, TripDetail> = {
         route: "KIX \u2192 SFO",
         airline: "JL12",
         flightNumber: "JL12",
-        departureDateTime: "2024-03-16T17:40",
-        arrivalDateTime: "2024-03-16T10:55",
+        departureTime: "2024-03-16T17:40",
+        arrivalTime: "2024-03-16T10:55",
         seat: "12",
         confirmationCode: "KIX12"
       }
@@ -131,18 +131,16 @@ export const mockTripDetails: Record<string, TripDetail> = {
         id: "l1",
         name: "Hotel Gracery Shinjuku",
         address: "Kabukicho, Tokyo",
-        startDate: "2024-03-15",
-        endDate: "2024-03-19",
-        nights: 4,
+        checkIn: "2024-03-15T15:00",
+        checkOut: "2024-03-19T11:00",
         confirmationCode: "JP4519"
       },
       {
         id: "l2",
         name: "Ryokan Kyoto",
         address: "Gion, Kyoto",
-        startDate: "2024-03-19",
-        endDate: "2024-03-22",
-        nights: 3,
+        checkIn: "2024-03-19T15:00",
+        checkOut: "2024-03-22T11:00",
         confirmationCode: "JP4519"
       }
     ],

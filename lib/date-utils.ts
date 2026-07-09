@@ -1,5 +1,5 @@
 function parseDate(rawDate: string) {
-  const safe = `${rawDate}T00:00:00`;
+  const safe = rawDate.includes("T") ? rawDate : `${rawDate}T00:00:00`;
   return new Date(safe);
 }
 
@@ -40,6 +40,17 @@ export function formatTripRange(startDate: string, endDate: string): string {
     day: "numeric",
     year: "numeric"
   }).format(end)}`;
+}
+
+export function calculateNights(startDate: string, endDate: string): number {
+  const start = new Date(startDate).getTime();
+  const end = new Date(endDate).getTime();
+
+  if (Number.isNaN(start) || Number.isNaN(end) || end <= start) {
+    return 0;
+  }
+
+  return Math.round((end - start) / (1000 * 60 * 60 * 24));
 }
 
 export function formatDisplayTime(rawTime?: string): string {

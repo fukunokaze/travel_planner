@@ -58,7 +58,8 @@ export interface FlightItem {
   route: string;
   airline: string;
   flightNumber: string;
-  date: string;
+  departureDateTime: string;
+  arrivalDateTime: string;
   seat?: string;
   confirmationCode?: string;
 }
@@ -67,7 +68,8 @@ export interface FlightUpsertRequest {
   route: string;
   airline: string;
   flightNumber: string;
-  date: string;
+  departureDateTime: string;
+  arrivalDateTime: string;
   seat?: string;
   confirmationCode?: string;
 }

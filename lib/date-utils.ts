@@ -12,6 +12,22 @@ export function formatDisplayDate(rawDate: string): string {
   }).format(date);
 }
 
+export function formatDisplayDateTime(rawDateTime: string): string {
+  const date = new Date(rawDateTime);
+
+  if (Number.isNaN(date.getTime())) {
+    return rawDateTime;
+  }
+
+  return new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit"
+  }).format(date);
+}
+
 export function formatTripRange(startDate: string, endDate: string): string {
   const start = parseDate(startDate);
   const end = parseDate(endDate);

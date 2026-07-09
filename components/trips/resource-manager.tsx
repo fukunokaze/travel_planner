@@ -6,7 +6,7 @@ import {
   createFlight,
   createLodging
 } from "@/lib/api-client";
-import { formatDisplayDate } from "@/lib/date-utils";
+import { formatDisplayDate, formatDisplayDateTime } from "@/lib/date-utils";
 import { TripDetail } from "@/lib/types";
 import { DeleteEntityButton } from "./delete-entity-button";
 
@@ -24,7 +24,8 @@ export function ResourceManager({ trip }: ResourceManagerProps) {
     route: "",
     airline: "",
     flightNumber: "",
-    date: trip.startDate,
+    departureDateTime: `${trip.startDate}T00:00`,
+    arrivalDateTime: `${trip.startDate}T00:00`,
     seat: "",
     confirmationCode: ""
   });
@@ -52,7 +53,8 @@ export function ResourceManager({ trip }: ResourceManagerProps) {
         route: "",
         airline: "",
         flightNumber: "",
-        date: trip.startDate,
+        departureDateTime: `${trip.startDate}T00:00`,
+        arrivalDateTime: `${trip.startDate}T00:00`,
         seat: "",
         confirmationCode: ""
       });
@@ -140,11 +142,32 @@ export function ResourceManager({ trip }: ResourceManagerProps) {
                 />
               </div>
               <div className="col-6">
+                <label className="form-label" htmlFor="flight-departure">
+                  Departure date/time
+                </label>
                 <input
+                  id="flight-departure"
                   className="form-control"
-                  type="date"
-                  value={flightForm.date}
-                  onChange={(input) => setFlightForm({ ...flightForm, date: input.target.value })}
+                  type="datetime-local"
+                  value={flightForm.departureDateTime}
+                  onChange={(input) =>
+                    setFlightForm({ ...flightForm, departureDateTime: input.target.value })
+                  }
+                  required
+                />
+              </div>
+              <div className="col-6">
+                <label className="form-label" htmlFor="flight-arrival">
+                  Arrival date/time
+                </label>
+                <input
+                  id="flight-arrival"
+                  className="form-control"
+                  type="datetime-local"
+                  value={flightForm.arrivalDateTime}
+                  onChange={(input) =>
+                    setFlightForm({ ...flightForm, arrivalDateTime: input.target.value })
+                  }
                   required
                 />
               </div>
@@ -185,7 +208,9 @@ export function ResourceManager({ trip }: ResourceManagerProps) {
                   <br />
                   Flight #: {flight.flightNumber}
                   <br />
-                  Date: {formatDisplayDate(flight.date)}
+                  Departs: {formatDisplayDateTime(flight.departureDateTime)}
+                  <br />
+                  Arrives: {formatDisplayDateTime(flight.arrivalDateTime)}
                   <br />
                   Seat: {flight.seat || "TBD"}
                 </p>

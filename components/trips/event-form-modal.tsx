@@ -30,7 +30,8 @@ export function EventFormModal({ trip, show, onClose }: EventFormModalProps) {
     endTime: "12:00",
     location: "",
     notes: "",
-    bookingCode: ""
+    bookingCode: "",
+    cost: ""
   });
   const [travelerIds, setTravelerIds] = useState<string[]>([]);
   const [relatedItemIds, setRelatedItemIds] = useState<string[]>([]);
@@ -80,6 +81,7 @@ export function EventFormModal({ trip, show, onClose }: EventFormModalProps) {
     try {
       await createTripEvent(trip.id, {
         ...form,
+        cost: form.cost === "" ? undefined : Number(form.cost),
         travelerIds,
         relatedItemIds
       });
@@ -215,16 +217,33 @@ export function EventFormModal({ trip, show, onClose }: EventFormModalProps) {
                 />
               </div>
 
-              <div className="mb-3">
-                <label className="form-label" htmlFor="event-booking-code">
-                  Confirmation/Booking #
-                </label>
-                <input
-                  id="event-booking-code"
-                  className="form-control"
-                  value={form.bookingCode}
-                  onChange={(input) => setForm({ ...form, bookingCode: input.target.value })}
-                />
+              <div className="row g-3 mb-3">
+                <div className="col-md-6">
+                  <label className="form-label" htmlFor="event-booking-code">
+                    Confirmation/Booking #
+                  </label>
+                  <input
+                    id="event-booking-code"
+                    className="form-control"
+                    value={form.bookingCode}
+                    onChange={(input) => setForm({ ...form, bookingCode: input.target.value })}
+                  />
+                </div>
+                <div className="col-md-6">
+                  <label className="form-label" htmlFor="event-cost">
+                    Cost
+                  </label>
+                  <input
+                    id="event-cost"
+                    className="form-control"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    placeholder="0.00"
+                    value={form.cost}
+                    onChange={(input) => setForm({ ...form, cost: input.target.value })}
+                  />
+                </div>
               </div>
 
               <div className="row g-3">

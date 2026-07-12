@@ -70,7 +70,8 @@ export const mockTripDetails: Record<string, TripDetail> = {
         date: "2024-03-15",
         startTime: "19:00",
         location: "Shinjuku",
-        tags: ["Tickets booked"]
+        tags: ["Tickets booked"],
+        cost: 45
       },
       {
         id: "e4",
@@ -81,7 +82,8 @@ export const mockTripDetails: Record<string, TripDetail> = {
         location: "Asakusa, Tokyo",
         tags: ["Tickets booked"],
         imageUrl:
-          "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?auto=format&fit=crop&w=400&q=70"
+          "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?auto=format&fit=crop&w=400&q=70",
+        cost: 10
       },
       {
         id: "e5",
@@ -90,7 +92,8 @@ export const mockTripDetails: Record<string, TripDetail> = {
         date: "2024-03-16",
         startTime: "13:00",
         location: "Asakusa district",
-        tags: ["Tickets booked"]
+        tags: ["Tickets booked"],
+        cost: 30
       },
       {
         id: "e6",
@@ -101,7 +104,8 @@ export const mockTripDetails: Record<string, TripDetail> = {
         location: "Sumida",
         tags: ["Tickets booked"],
         imageUrl:
-          "https://images.unsplash.com/photo-1492571350019-22de08371fd3?auto=format&fit=crop&w=400&q=70"
+          "https://images.unsplash.com/photo-1492571350019-22de08371fd3?auto=format&fit=crop&w=400&q=70",
+        cost: 25
       }
     ],
     flights: [
@@ -113,7 +117,8 @@ export const mockTripDetails: Record<string, TripDetail> = {
         departureTime: "2024-03-15T11:05",
         arrivalTime: "2024-03-16T15:20",
         seat: "353-38",
-        confirmationCode: "NRT3538"
+        confirmationCode: "NRT3538",
+        cost: 950
       },
       {
         id: "f2",
@@ -123,7 +128,8 @@ export const mockTripDetails: Record<string, TripDetail> = {
         departureTime: "2024-03-16T17:40",
         arrivalTime: "2024-03-16T10:55",
         seat: "12",
-        confirmationCode: "KIX12"
+        confirmationCode: "KIX12",
+        cost: 980
       }
     ],
     lodgings: [
@@ -133,7 +139,8 @@ export const mockTripDetails: Record<string, TripDetail> = {
         address: "Kabukicho, Tokyo",
         checkIn: "2024-03-15T15:00",
         checkOut: "2024-03-19T11:00",
-        confirmationCode: "JP4519"
+        confirmationCode: "JP4519",
+        cost: 620
       },
       {
         id: "l2",
@@ -141,7 +148,8 @@ export const mockTripDetails: Record<string, TripDetail> = {
         address: "Gion, Kyoto",
         checkIn: "2024-03-19T15:00",
         checkOut: "2024-03-22T11:00",
-        confirmationCode: "JP4519"
+        confirmationCode: "JP4519",
+        cost: 540
       }
     ],
     documents: [

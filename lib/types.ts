@@ -38,6 +38,7 @@ export interface TripEvent {
   tags?: string[];
   travelerIds?: string[];
   relatedItemIds?: string[];
+  cost?: number;
 }
 
 export interface TripEventUpsertRequest {
@@ -51,6 +52,7 @@ export interface TripEventUpsertRequest {
   bookingCode?: string;
   travelerIds?: string[];
   relatedItemIds?: string[];
+  cost?: number;
 }
 
 export interface FlightItem {
@@ -62,6 +64,7 @@ export interface FlightItem {
   arrivalTime: string;
   seat?: string;
   confirmationCode?: string;
+  cost?: number;
 }
 
 export interface FlightUpsertRequest {
@@ -72,6 +75,7 @@ export interface FlightUpsertRequest {
   arrivalTime: string;
   seat?: string;
   confirmationCode?: string;
+  cost?: number;
 }
 
 export interface LodgingItem {
@@ -81,6 +85,7 @@ export interface LodgingItem {
   checkIn: string;
   checkOut: string;
   confirmationCode?: string;
+  cost?: number;
 }
 
 export interface LodgingUpsertRequest {
@@ -89,6 +94,7 @@ export interface LodgingUpsertRequest {
   checkIn: string;
   checkOut: string;
   confirmationCode?: string;
+  cost?: number;
 }
 
 export interface DocumentItem {

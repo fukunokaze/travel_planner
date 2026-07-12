@@ -4,6 +4,7 @@ import { ResourceManager } from "@/components/trips/resource-manager";
 import { Timeline } from "@/components/trips/timeline";
 import { TripPageActions } from "@/components/trips/trip-page-actions";
 import { getTrip, getTrips } from "@/lib/api-server";
+import { calculateTripCost, formatCurrency } from "@/lib/cost-utils";
 import { formatTripRange } from "@/lib/date-utils";
 
 interface TripPageProps {
@@ -33,6 +34,9 @@ export default async function TripPage({ params }: TripPageProps) {
                 {" \u00b7 "}
                 <i className="bi bi-geo-alt me-1" />
                 {trip.destination}
+                {" \u00b7 "}
+                <i className="bi bi-wallet2 me-1" />
+                Total cost: {formatCurrency(calculateTripCost(trip))}
               </p>
             </div>
             <TripPageActions trip={trip} />

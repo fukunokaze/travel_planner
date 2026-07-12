@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { formatDisplayDate, formatDisplayTime } from "@/lib/date-utils";
+import { formatCurrency } from "@/lib/cost-utils";
 import { TripDetail, TripEvent } from "@/lib/types";
 import { DeleteEntityButton } from "./delete-entity-button";
 
@@ -79,6 +80,9 @@ export function Timeline({ trip }: TimelineProps) {
                     ) : null}
                     {event.bookingCode ? (
                       <p className="jp-event-subline">Reservation: {event.bookingCode}</p>
+                    ) : null}
+                    {event.cost != null ? (
+                      <p className="jp-event-subline">Cost: {formatCurrency(event.cost)}</p>
                     ) : null}
                     {event.tags?.length ? (
                       <div className="jp-tag-wrap">

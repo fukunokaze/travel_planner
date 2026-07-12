@@ -7,6 +7,7 @@ import {
   createLodging
 } from "@/lib/api-client";
 import { calculateNights, formatDisplayDate, formatDisplayDateTime } from "@/lib/date-utils";
+import { formatCurrency } from "@/lib/cost-utils";
 import { TripDetail } from "@/lib/types";
 import { DeleteEntityButton } from "./delete-entity-button";
 
@@ -27,15 +28,23 @@ export function ResourceManager({ trip }: ResourceManagerProps) {
     departureTime: `${trip.startDate}T00:00`,
     arrivalTime: `${trip.startDate}T00:00`,
     seat: "",
-    confirmationCode: ""
+    confirmationCode: "",
+    cost: ""
   });
   const [lodgingForm, setLodgingForm] = useState({
     name: "",
     address: "",
     checkIn: `${trip.startDate}T15:00`,
     checkOut: `${trip.endDate}T11:00`,
-    confirmationCode: ""
+    confirmationCode: "",
+    cost: ""
   });
+
+  const flightsCost = trip.flights.reduce((total, flight) => total + (flight.cost || 0), 0);
+  const lodgingsCost = trip.lodgings.reduce((total, lodging) => total + (lodging.cost || 0), 0);
+  const activitiesCost = trip.events
+    .filter((event) => event.type === "activity")
+    .reduce((total, event) => total + (event.cost || 0), 0);
 
   const onCreateFlight = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -44,7 +53,8 @@ export function ResourceManager({ trip }: ResourceManagerProps) {
 
     try {
       await createFlight(trip.id, {
-        ...flightForm
+        ...flightForm,
+        cost: flightForm.cost === "" ? undefined : Number(flightForm.cost)
       });
       router.refresh();
       setShowFlightForm(false);
@@ -55,7 +65,8 @@ export function ResourceManager({ trip }: ResourceManagerProps) {
         departureTime: `${trip.startDate}T00:00`,
         arrivalTime: `${trip.startDate}T00:00`,
         seat: "",
-        confirmationCode: ""
+        confirmationCode: "",
+        cost: ""
       });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unable to add flight.");
@@ -70,7 +81,10 @@ export function ResourceManager({ trip }: ResourceManagerProps) {
     setError(null);
 
     try {
-      await createLodging(trip.id, lodgingForm);
+      await createLodging(trip.id, {
+        ...lodgingForm,
+        cost: lodgingForm.cost === "" ? undefined : Number(lodgingForm.cost)
+      });
       router.refresh();
       setShowLodgingForm(false);
       setLodgingForm({
@@ -78,7 +92,8 @@ export function ResourceManager({ trip }: ResourceManagerProps) {
         address: "",
         checkIn: `${trip.startDate}T15:00`,
         checkOut: `${trip.endDate}T11:00`,
-        confirmationCode: ""
+        confirmationCode: "",
+        cost: ""
       });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unable to add lodging.");
@@ -102,6 +117,9 @@ export function ResourceManager({ trip }: ResourceManagerProps) {
             {showFlightForm ? "Close" : "Add Flight"}
           </button>
         </div>
+        {trip.flights.length ? (
+          <p className="jp-meta">Subtotal: {formatCurrency(flightsCost)}</p>
+        ) : null}
         {showFlightForm ? (
           <form className="border rounded p-3 mb-3" onSubmit={onCreateFlight}>
             <div className="row g-2">
@@ -174,7 +192,7 @@ export function ResourceManager({ trip }: ResourceManagerProps) {
                   onChange={(input) => setFlightForm({ ...flightForm, seat: input.target.value })}
                 />
               </div>
-              <div className="col-12">
+              <div className="col-6">
                 <input
                   className="form-control"
                   placeholder="Confirmation #"
@@ -182,6 +200,21 @@ export function ResourceManager({ trip }: ResourceManagerProps) {
                   onChange={(input) =>
                     setFlightForm({ ...flightForm, confirmationCode: input.target.value })
                   }
+                />
+              </div>
+              <div className="col-6">
+                <label className="form-label" htmlFor="flight-cost">
+                  Cost
+                </label>
+                <input
+                  id="flight-cost"
+                  className="form-control"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  placeholder="0.00"
+                  value={flightForm.cost}
+                  onChange={(input) => setFlightForm({ ...flightForm, cost: input.target.value })}
                 />
               </div>
             </div>
@@ -208,6 +241,8 @@ export function ResourceManager({ trip }: ResourceManagerProps) {
                   Arrives: {formatDisplayDateTime(flight.arrivalTime)}
                   <br />
                   Seat: {flight.seat || "TBD"}
+                  <br />
+                  Cost: {flight.cost != null ? formatCurrency(flight.cost) : "-"}
                 </p>
                 <p className="jp-meta">Confirmation #: {flight.confirmationCode || "-"}</p>
                 <div className="jp-action-inline">
@@ -236,6 +271,9 @@ export function ResourceManager({ trip }: ResourceManagerProps) {
             {showLodgingForm ? "Close" : "Add Lodging"}
           </button>
         </div>
+        {trip.lodgings.length ? (
+          <p className="jp-meta">Subtotal: {formatCurrency(lodgingsCost)}</p>
+        ) : null}
         {showLodgingForm ? (
           <form className="border rounded p-3 mb-3" onSubmit={onCreateLodging}>
             <div className="row g-2">
@@ -296,6 +334,23 @@ export function ResourceManager({ trip }: ResourceManagerProps) {
                   }
                 />
               </div>
+              <div className="col-6">
+                <label className="form-label" htmlFor="lodging-cost">
+                  Cost
+                </label>
+                <input
+                  id="lodging-cost"
+                  className="form-control"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  placeholder="0.00"
+                  value={lodgingForm.cost}
+                  onChange={(input) =>
+                    setLodgingForm({ ...lodgingForm, cost: input.target.value })
+                  }
+                />
+              </div>
             </div>
             <button className="btn btn-primary btn-sm mt-3" type="submit" disabled={busy}>
               {busy ? "Saving..." : "Save Lodging"}
@@ -314,6 +369,8 @@ export function ResourceManager({ trip }: ResourceManagerProps) {
                   address: {lodging.address}
                   <br />
                   Dates: {formatDisplayDate(lodging.checkIn)} - {formatDisplayDate(lodging.checkOut)}
+                  <br />
+                  Cost: {lodging.cost != null ? formatCurrency(lodging.cost) : "-"}
                 </p>
                 <p className="jp-meta">Confirmation #: {lodging.confirmationCode || "-"}</p>
                 <div className="jp-action-inline">
@@ -339,6 +396,8 @@ export function ResourceManager({ trip }: ResourceManagerProps) {
         <p className="jp-meta mb-0">
           {trip.events.filter((event) => event.type === "activity").length} activity checkpoints in
           this itinerary.
+          <br />
+          Subtotal: {formatCurrency(activitiesCost)}
         </p>
       </section>
 

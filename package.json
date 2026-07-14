@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@react-oauth/google": "^0.13.5",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
     "next": "^15.0.0",
@@ -24,4 +25,3 @@
     "typescript": "^5.7.2"
   }
 }
-

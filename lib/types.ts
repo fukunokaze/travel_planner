@@ -1,3 +1,11 @@
+export interface GoogleAuthRequest {
+  idToken: string;
+}
+
+export interface AuthResponse {
+  accessToken: string;
+}
+
 export type TripEventType = "activity" | "flight" | "lodging";
 
 export interface Traveler {

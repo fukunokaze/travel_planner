@@ -1,4 +1,6 @@
 import "server-only";
+import { cookies } from "next/headers";
+import { ACCESS_TOKEN_COOKIE } from "./auth-constants";
 import { mockTripDetails, mockTrips } from "./mock-data";
 import { TripDetail, TripSummary } from "./types";
 
@@ -7,10 +9,14 @@ const API_BASE_URL =
     .replace(/\/$/, "");
 
 async function request<T>(path: string): Promise<T> {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get(ACCESS_TOKEN_COOKIE)?.value;
+
   const response = await fetch(`${API_BASE_URL}${path}`, {
     cache: "no-store",
     headers: {
-      Accept: "application/json"
+      Accept: "application/json",
+      ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {})
     }
   });
 

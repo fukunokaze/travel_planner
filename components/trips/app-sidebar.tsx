@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LogoutButton } from "@/components/auth/logout-button";
 import { TripSummary } from "@/lib/types";
 
 const navLinks = [
@@ -45,6 +46,10 @@ export function AppSidebar({ trips, activeTripId }: AppSidebarProps) {
             {trip.title}
           </Link>
         ))}
+      </div>
+
+      <div className="mt-auto pt-3">
+        <LogoutButton />
       </div>
     </aside>
   );

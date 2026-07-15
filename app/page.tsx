@@ -1,8 +1,22 @@
 import { AppSidebar } from "@/components/trips/app-sidebar";
 import { TripDirectoryClient } from "@/components/trips/trip-directory-client";
+import { GoogleCallbackHandler } from "@/components/auth/google-callback-handler";
 import { getTrips } from "@/lib/api-server";
 
-export default async function HomePage() {
+interface HomePageProps {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
+export default async function HomePage({ searchParams }: HomePageProps) {
+  const params = await searchParams;
+  const code = typeof params.code === "string" ? params.code : undefined;
+  const error = typeof params.error === "string" ? params.error : undefined;
+  const state = typeof params.state === "string" ? params.state : undefined;
+
+  if (code || error) {
+    return <GoogleCallbackHandler code={code} error={error} state={state} />;
+  }
+
   const trips = await getTrips();
 
   return (

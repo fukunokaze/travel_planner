@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ACCESS_TOKEN_COOKIE } from "./lib/auth-constants";
+import { isJwtExpired } from "./lib/jwt";
 
 const PUBLIC_PATHS = ["/login"];
 
@@ -8,16 +9,22 @@ function isPublicPath(pathname: string) {
 }
 
 export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-  const hasToken = Boolean(request.cookies.get(ACCESS_TOKEN_COOKIE)?.value);
+  const { pathname, searchParams } = request.nextUrl;
+  const token = request.cookies.get(ACCESS_TOKEN_COOKIE)?.value;
+  const hasValidToken = Boolean(token) && !isJwtExpired(token!);
+  const isGoogleCallback = pathname === "/" && (searchParams.has("code") || searchParams.has("error"));
 
-  if (!hasToken && !isPublicPath(pathname)) {
+  if (!hasValidToken && !isPublicPath(pathname) && !isGoogleCallback) {
     const loginUrl = new URL("/login", request.url);
     loginUrl.searchParams.set("redirect", pathname);
-    return NextResponse.redirect(loginUrl);
+    const response = NextResponse.redirect(loginUrl);
+    if (token) {
+      response.cookies.delete(ACCESS_TOKEN_COOKIE);
+    }
+    return response;
   }
 
-  if (hasToken && isPublicPath(pathname)) {
+  if (hasValidToken && isPublicPath(pathname)) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 

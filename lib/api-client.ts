@@ -40,12 +40,12 @@ async function request<T>(path: string, init?: RequestInit, options?: { skipAuth
   return (await response.json()) as T;
 }
 
-export function loginWithGoogle(idToken: string) {
+export function loginWithGoogle(code: string) {
   return request<AuthResponse>(
     "/api/Auth/google",
     {
       method: "POST",
-      body: JSON.stringify({ idToken } satisfies GoogleAuthRequest)
+      body: JSON.stringify({ code } satisfies GoogleAuthRequest)
     },
     { skipAuth: true }
   );

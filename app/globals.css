@@ -371,6 +371,142 @@ a {
   margin-bottom: 12px;
 }
 
+.jp-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.jp-cal-weekdays {
+  margin-bottom: 8px;
+}
+
+.jp-cal-weekday {
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--jp-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 4px 0;
+}
+
+.jp-cal-loading {
+  opacity: 0.5;
+}
+
+.jp-cal-cell {
+  aspect-ratio: 1 / 1;
+  border: 1px solid var(--jp-panel-border);
+  border-radius: var(--jp-radius-md);
+  background: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 4px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.jp-cal-cell:hover {
+  background: var(--jp-primary-soft);
+  border-color: var(--jp-primary);
+}
+
+.jp-cal-cell.outside {
+  background: transparent;
+  border-color: transparent;
+  color: var(--jp-muted);
+}
+
+.jp-cal-cell.today .jp-cal-daynum {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  background: var(--jp-primary);
+  color: white;
+}
+
+.jp-cal-cell.trip-day {
+  background: var(--jp-primary-soft);
+}
+
+.jp-cal-daynum {
+  font-weight: 700;
+}
+
+.jp-cal-markers {
+  display: flex;
+  gap: 4px;
+  min-height: 8px;
+}
+
+.jp-cal-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+}
+
+.jp-cal-dot.trip {
+  background: var(--jp-primary);
+}
+
+.jp-cal-dot.event {
+  background: #ca4c46;
+}
+
+.jp-cal-entry {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 12px;
+  align-items: start;
+  border: 1px solid var(--jp-panel-border);
+  border-radius: var(--jp-radius-md);
+  padding: 12px;
+}
+
+.jp-cal-entry-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  background: var(--jp-primary);
+}
+
+.jp-cal-entry-icon.trip {
+  background: #587eb8;
+}
+
+.jp-cal-entry-title {
+  font-weight: 700;
+}
+
+.jp-cal-entry-time,
+.jp-cal-entry-meta {
+  color: var(--jp-muted);
+  font-size: 0.92rem;
+}
+
+.jp-cal-entry-link {
+  display: inline-block;
+  margin-top: 4px;
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .jp-cal-cell {
+    border-radius: 8px;
+  }
+}
+
 @media (max-width: 1200px) {
   .jp-sidebar {
     width: 280px;

@@ -128,3 +128,29 @@ export interface TripDetail extends TripSummary {
   notes?: string;
 }
 
+export interface CalendarDayMarker {
+  date: string;
+  hasEvents: boolean;
+  isTripDay: boolean;
+}
+
+export type CalendarEntrySource = "GoogleEvent" | "TripEvent" | "TripRange" | string;
+
+export interface CalendarEntry {
+  id: string;
+  source: CalendarEntrySource;
+  title: string;
+  start: string;
+  end: string;
+  isAllDay: boolean;
+  description?: string;
+  location?: string;
+  tripId?: string;
+  tripEventId?: string;
+}
+
+export interface CalendarDayDetail {
+  date: string;
+  entries: CalendarEntry[];
+}
+

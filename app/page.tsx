@@ -21,7 +21,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
 
   return (
     <div className="journey-shell">
-      <AppSidebar trips={trips} />
+      <AppSidebar trips={trips} activeNavHref="/" />
       <main className="jp-main">
         <section className="jp-header">
           <h1 className="jp-page-title">My Trips</h1>

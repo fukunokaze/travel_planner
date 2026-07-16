@@ -5,7 +5,7 @@ import { TripSummary } from "@/lib/types";
 const navLinks = [
   { icon: "bi-grid", label: "Dashboard", href: "/" },
   { icon: "bi-signpost", label: "My Trips", href: "/" },
-  { icon: "bi-calendar4-event", label: "Calendar", href: "/" },
+  { icon: "bi-calendar4-event", label: "Calendar", href: "/calendar" },
   { icon: "bi-wallet2", label: "Budget", href: "/" },
   { icon: "bi-gear", label: "Settings", href: "/" }
 ];
@@ -13,9 +13,10 @@ const navLinks = [
 interface AppSidebarProps {
   trips: TripSummary[];
   activeTripId?: string;
+  activeNavHref?: string;
 }
 
-export function AppSidebar({ trips, activeTripId }: AppSidebarProps) {
+export function AppSidebar({ trips, activeTripId, activeNavHref }: AppSidebarProps) {
   return (
     <aside className="jp-sidebar">
       <div className="jp-brand">
@@ -27,7 +28,11 @@ export function AppSidebar({ trips, activeTripId }: AppSidebarProps) {
 
       <nav aria-label="Sidebar navigation">
         {navLinks.map((link) => (
-          <Link key={link.label} className="jp-sidebar-link" href={link.href}>
+          <Link
+            key={link.label}
+            className={`jp-sidebar-link ${link.href === activeNavHref ? "active" : ""}`}
+            href={link.href}
+          >
             <i className={`bi ${link.icon}`} />
             {link.label}
           </Link>

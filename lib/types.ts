@@ -1,9 +1,17 @@
 export interface GoogleAuthRequest {
-  idToken: string;
+  code: string;
+}
+
+export interface AuthUser {
+  id: string;
+  email: string;
+  name: string;
 }
 
 export interface AuthResponse {
   accessToken: string;
+  expiresAt: string;
+  user: AuthUser;
 }
 
 export type TripEventType = "activity" | "flight" | "lodging";
@@ -118,5 +126,31 @@ export interface TripDetail extends TripSummary {
   lodgings: LodgingItem[];
   documents: DocumentItem[];
   notes?: string;
+}
+
+export interface CalendarDayMarker {
+  date: string;
+  hasEvents: boolean;
+  isTripDay: boolean;
+}
+
+export type CalendarEntrySource = "GoogleEvent" | "TripEvent" | "TripRange" | string;
+
+export interface CalendarEntry {
+  id: string;
+  source: CalendarEntrySource;
+  title: string;
+  start: string;
+  end: string;
+  isAllDay: boolean;
+  description?: string;
+  location?: string;
+  tripId?: string;
+  tripEventId?: string;
+}
+
+export interface CalendarDayDetail {
+  date: string;
+  entries: CalendarEntry[];
 }
 

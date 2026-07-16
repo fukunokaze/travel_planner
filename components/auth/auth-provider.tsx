@@ -8,7 +8,7 @@ import { clearClientAccessToken, getClientAccessToken, setClientAccessToken } fr
 interface AuthContextValue {
   accessToken: string | null;
   isAuthenticated: boolean;
-  loginWithGoogleIdToken: (idToken: string) => Promise<void>;
+  loginWithGoogleCode: (code: string) => Promise<void>;
   logout: () => void;
 }
 
@@ -22,8 +22,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setAccessToken(getClientAccessToken());
   }, []);
 
-  const loginWithGoogleIdToken = useCallback(async (idToken: string) => {
-    const { accessToken: token } = await loginWithGoogle(idToken);
+  const loginWithGoogleCode = useCallback(async (code: string) => {
+    const { accessToken: token } = await loginWithGoogle(code);
     setClientAccessToken(token);
     setAccessToken(token);
   }, []);
@@ -37,7 +37,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ accessToken, isAuthenticated: Boolean(accessToken), loginWithGoogleIdToken, logout }}
+      value={{ accessToken, isAuthenticated: Boolean(accessToken), loginWithGoogleCode, logout }}
     >
       {children}
     </AuthContext.Provider>

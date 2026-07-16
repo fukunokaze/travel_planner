@@ -1,6 +1,8 @@
 import { getClientAccessToken } from "./auth-cookie";
 import {
   AuthResponse,
+  CalendarDayDetail,
+  CalendarDayMarker,
   FlightItem,
   FlightUpsertRequest,
   GoogleAuthRequest,
@@ -40,12 +42,12 @@ async function request<T>(path: string, init?: RequestInit, options?: { skipAuth
   return (await response.json()) as T;
 }
 
-export function loginWithGoogle(idToken: string) {
+export function loginWithGoogle(code: string) {
   return request<AuthResponse>(
     "/api/Auth/google",
     {
       method: "POST",
-      body: JSON.stringify({ idToken } satisfies GoogleAuthRequest)
+      body: JSON.stringify({ code } satisfies GoogleAuthRequest)
     },
     { skipAuth: true }
   );
@@ -112,6 +114,26 @@ export function deleteLodging(tripId: string, lodgingId: string) {
 
 export function getTripClient(tripId: string) {
   return request<TripDetail>(`/api/trips/${tripId}`, {
+    method: "GET"
+  });
+}
+
+export function getCalendarMonth(year: number, month: number, timeZoneId: string) {
+  const query = new URLSearchParams({
+    year: String(year),
+    month: String(month),
+    timeZoneId
+  });
+
+  return request<CalendarDayMarker[]>(`/api/Calendar/month?${query.toString()}`, {
+    method: "GET"
+  });
+}
+
+export function getCalendarDay(date: string, timeZoneId: string) {
+  const query = new URLSearchParams({ date, timeZoneId });
+
+  return request<CalendarDayDetail>(`/api/Calendar/day?${query.toString()}`, {
     method: "GET"
   });
 }

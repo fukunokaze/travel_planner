@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "docker:build": "docker compose --env-file .env.local build",
+    "docker:up": "docker compose --env-file .env.local up --build"
   },
   "dependencies": {
     "@react-oauth/google": "^0.13.5",

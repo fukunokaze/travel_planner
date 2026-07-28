@@ -22,6 +22,12 @@ NEXT_PUBLIC_API_BASE_URL=http://localhost:5000
 API_BASE_URL=http://localhost:5000
 ```
 
+## Docker
+```bash
+npm run docker:up
+```
+This runs `docker compose --env-file .env.local up --build`. The `--env-file` flag is required: Compose only auto-loads a file literally named `.env` for build-arg interpolation, so without it the `NEXT_PUBLIC_*` build args resolve to empty strings and the client bundle ships without your API base URL or Google client ID.
+
 ## API Integration
 The app expects a .NET Web API with these endpoints:
 - `GET /api/trips`

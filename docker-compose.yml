@@ -10,4 +10,10 @@ services:
       - .env.local
     ports:
       - "3000:3000"
+    networks:
+      - shared-net
     restart: unless-stopped
+
+networks:
+  shared-net:
+    external: true

@@ -43,11 +43,14 @@ export interface TripUpsertRequest {
 export interface TripEvent {
   id: string;
   type: TripEventType;
-  title: string;
+  name: string;
   date: string;
   startTime?: string;
   endTime?: string;
-  location?: string;
+  address?: string;
+  latitude?: number;
+  longitude?: number;
+  googlePlaceId?: string;
   notes?: string;
   bookingCode?: string;
   imageUrl?: string;
@@ -59,11 +62,14 @@ export interface TripEvent {
 
 export interface TripEventUpsertRequest {
   type: TripEventType;
-  title: string;
+  name: string;
   date: string;
   startTime: string;
   endTime: string;
-  location: string;
+  address?: string;
+  latitude?: number;
+  longitude?: number;
+  googlePlaceId?: string;
   notes?: string;
   bookingCode?: string;
   travelerIds?: string[];

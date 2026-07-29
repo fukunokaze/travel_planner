@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { createTripEvent } from "@/lib/api-client";
 import { calculateNights } from "@/lib/date-utils";
 import { TripDetail, TripEventType } from "@/lib/types";
+import { LocationAutocomplete, LocationSelection } from "./location-autocomplete";
 
 interface EventFormModalProps {
   trip: TripDetail;
@@ -24,11 +25,14 @@ export function EventFormModal({ trip, show, onClose }: EventFormModalProps) {
   const [error, setError] = useState<string | null>(null);
   const [form, setForm] = useState({
     type: "activity" as TripEventType,
-    title: "",
+    name: "",
     date: trip.startDate,
     startTime: "10:00",
     endTime: "12:00",
-    location: "",
+    address: "",
+    latitude: undefined as number | undefined,
+    longitude: undefined as number | undefined,
+    googlePlaceId: undefined as string | undefined,
     notes: "",
     bookingCode: "",
     cost: ""
@@ -71,6 +75,11 @@ export function EventFormModal({ trip, show, onClose }: EventFormModalProps) {
     event.preventDefault();
     setError(null);
 
+    if (!form.name.trim()) {
+      setError("Please choose a location so the event has a name.");
+      return;
+    }
+
     if (form.date < trip.startDate || form.date > trip.endDate) {
       setError(`Event date must be between ${trip.startDate} and ${trip.endDate}.`);
       return;
@@ -110,20 +119,6 @@ export function EventFormModal({ trip, show, onClose }: EventFormModalProps) {
             </div>
             <div className="modal-body">
               {error ? <p className="jp-notice">{error}</p> : null}
-              <div className="mb-3">
-                <label className="form-label" htmlFor="event-title">
-                  Event Title
-                </label>
-                <input
-                  id="event-title"
-                  className="form-control form-control-lg"
-                  value={form.title}
-                  placeholder="e.g., Senso-ji Temple Visit"
-                  onChange={(input) => setForm({ ...form, title: input.target.value })}
-                  required
-                />
-              </div>
-
               <div className="row g-3 mb-3">
                 <div className="col-md-4">
                   <label className="form-label" htmlFor="event-type">
@@ -194,13 +189,30 @@ export function EventFormModal({ trip, show, onClose }: EventFormModalProps) {
                 <label className="form-label" htmlFor="event-location">
                   Location
                 </label>
-                <input
+                <LocationAutocomplete
                   id="event-location"
-                  className="form-control"
-                  value={form.location}
+                  value={form.address}
                   placeholder="Asakusa, Tokyo"
-                  onChange={(input) => setForm({ ...form, location: input.target.value })}
-                  required
+                  onTextChange={(address) =>
+                    setForm((current) => ({
+                      ...current,
+                      name: address,
+                      address,
+                      latitude: undefined,
+                      longitude: undefined,
+                      googlePlaceId: undefined
+                    }))
+                  }
+                  onPlaceSelect={(selection: LocationSelection) =>
+                    setForm((current) => ({
+                      ...current,
+                      name: selection.name || selection.address,
+                      address: selection.address,
+                      latitude: selection.latitude ?? undefined,
+                      longitude: selection.longitude ?? undefined,
+                      googlePlaceId: selection.googlePlaceId ?? undefined
+                    }))
+                  }
                 />
               </div>
 

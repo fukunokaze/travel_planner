@@ -71,11 +71,17 @@ export function Timeline({ trip }: TimelineProps) {
                     <i className={`bi ${iconByType[event.type]}`} />
                   </div>
                   <div>
-                    <h4 className="jp-event-title">{event.title}</h4>
-                    {event.location ? (
+                    <h4 className="jp-event-title">{event.name}</h4>
+                    {event.address ? (
                       <p className="jp-event-subline">
                         <i className="bi bi-geo-alt me-1 text-primary" />
-                        {event.location}
+                        {event.address}
+                      </p>
+                    ) : null}
+                    {event.notes ? (
+                      <p className="jp-event-subline">
+                        <i className="bi bi-journal-text me-1" />
+                        {event.notes}
                       </p>
                     ) : null}
                     {event.bookingCode ? (
@@ -99,7 +105,7 @@ export function Timeline({ trip }: TimelineProps) {
                       <Image
                         className="jp-thumb"
                         src={event.imageUrl}
-                        alt={event.title}
+                        alt={event.name}
                         width={130}
                         height={76}
                       />

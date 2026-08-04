@@ -334,6 +334,12 @@ a {
   font-weight: 700;
 }
 
+.jp-place-autocomplete {
+  color-scheme: light;
+  background-color: #ffffff;
+  color: var(--jp-text);
+}
+
 .jp-doc-card {
   border-radius: 12px;
   border: 1px solid var(--jp-panel-border);

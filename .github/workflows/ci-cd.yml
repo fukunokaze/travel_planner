@@ -1,0 +1,107 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-and-push:
+    runs-on: self-hosted
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          build-args: |
+            NEXT_PUBLIC_API_BASE_URL=${{ secrets.NEXT_PUBLIC_API_BASE_URL }}
+            NEXT_PUBLIC_GOOGLE_CLIENT_ID=${{ secrets.NEXT_PUBLIC_GOOGLE_CLIENT_ID }}
+            NEXT_PUBLIC_GOOGLE_REDIRECT_URI=${{ secrets.NEXT_PUBLIC_GOOGLE_REDIRECT_URI }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy:
+    needs: build-and-push
+    runs-on: self-hosted
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Point kubectl at minikube
+        run: |
+          kubectl config use-context minikube
+          kubectl cluster-info
+
+      - name: Create/update GHCR image pull secret
+        run: |
+          kubectl create secret docker-registry ghcr-credentials \
+            --docker-server=${{ env.REGISTRY }} \
+            --docker-username=${{ github.actor }} \
+            --docker-password=${{ secrets.GITHUB_TOKEN }} \
+            --dry-run=client -o yaml | kubectl apply -f -
+
+      - name: Create/update app env secret
+        run: |
+          kubectl create secret generic travel-planner-env \
+            --from-literal=API_BASE_URL="${{ secrets.API_BASE_URL }}" \
+            --from-literal=NEXT_PUBLIC_API_BASE_URL="${{ secrets.NEXT_PUBLIC_API_BASE_URL }}" \
+            --from-literal=NEXT_PUBLIC_GOOGLE_CLIENT_ID="${{ secrets.NEXT_PUBLIC_GOOGLE_CLIENT_ID }}" \
+            --from-literal=NEXT_PUBLIC_GOOGLE_REDIRECT_URI="${{ secrets.NEXT_PUBLIC_GOOGLE_REDIRECT_URI }}" \
+            --from-literal=NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="${{ secrets.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY }}" \
+            --dry-run=client -o yaml | kubectl apply -f -
+
+      - name: Apply manifests
+        run: |
+          kubectl apply -f k8s/deployment.yaml
+          kubectl apply -f k8s/service.yaml
+
+      - name: Roll out new image
+        run: |
+          kubectl set image deployment/travel-planner \
+            travel-planner=${{ needs.build-and-push.outputs.image }}
+          kubectl rollout status deployment/travel-planner --timeout=120s
+
+      - name: Print access URL
+        run: |
+          echo "NodePort URL: http://$(minikube ip):30080"

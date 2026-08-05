@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: travel-planner
+  labels:
+    app: travel-planner
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: travel-planner
+  template:
+    metadata:
+      labels:
+        app: travel-planner
+    spec:
+      imagePullSecrets:
+        - name: ghcr-credentials
+      containers:
+        - name: travel-planner
+          image: ghcr.io/fukunokaze/travel_planner:latest
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - secretRef:
+                name: travel-planner-env
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 20

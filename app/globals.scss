@@ -13,6 +13,9 @@
   --jp-radius-md: 14px;
 }
 
+$color-black: #000;
+
+
 * {
   box-sizing: border-box;
 }
@@ -182,7 +185,7 @@ a {
   font-weight: 700;
 }
 
-.jp-day-group + .jp-day-group {
+.jp-day-group+.jp-day-group {
   margin-top: 24px;
 }
 
@@ -270,7 +273,7 @@ a {
   object-fit: cover;
 }
 
-.jp-side-section + .jp-side-section {
+.jp-side-section+.jp-side-section {
   margin-top: 18px;
 }
 
@@ -554,3 +557,10 @@ a {
   }
 }
 
+
+.btn {
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 1rem 2rem rgba($color-black, .2);
+  }
+}
